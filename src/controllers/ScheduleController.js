@@ -13,46 +13,37 @@ module.exports = {
     store(req, res){
         const rules = file.read();
         let {type, days, intervals, date} = req.body;
-        validation = {
-            result: true
-        }
+     
         
-        if(validation.result){
-            if(type === "date"){
+        if(type === "date"){
+            intervals.forEach(interval=>{
+                let rule = {
+                    id: rules.length,
+                    date: date,
+                    day: moment(date,"DD-MM-YYYY").format("d"),
+                    interval: interval
+                }
+                rules.push(rule);
+            })            
+        } else{
+            days = type === "weekly" ? days : [0,1,2,3,4,5,6];
+            days.forEach(day=>{
                 intervals.forEach(interval=>{
                     let rule = {
                         id: rules.length,
-                        date: date,
-                        day: moment(date,"DD-MM-YYYY").format("d"),
+                        day: day,
                         interval: interval
                     }
                     rules.push(rule);
-                })            
-            } else{
-                days = type === "weekly" ? days : [0,1,2,3,4,5,6];
-                days.forEach(day=>{
-                    intervals.forEach(interval=>{
-                        let rule = {
-                            id: rules.length,
-                            day: day,
-                            interval: interval
-                        }
-                        rules.push(rule);
-                    })
                 })
-            } 
-            file.write(rules);
-            return res.status(201).json({
-                message: "successfully created rule.",
-                rules : rules,
-                success: true
-            });
-        } else{
-            return res.status(400).json({
-                message: "validation.message",
-                success: false
-            });
-        }
+            })
+        } 
+        file.write(rules);
+        return res.status(201).json({
+            message: "successfully created rule.",
+            rules : rules,
+            success: true
+        });
     },
 
     destroy(req, res){
