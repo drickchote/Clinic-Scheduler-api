@@ -5,6 +5,9 @@ This API was developed for the Cubos's challenger and serves to facilitate the m
 # Installing
 
 ```git clone https://github.com/drickchote/Clinic-Scheduler-api.git``` 
+
 ```cd /Clinic-Scheduler-api``` 
+
 ```npm install``` 
+
 ```npm run dev``` 
